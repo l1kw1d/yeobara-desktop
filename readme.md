@@ -1,4 +1,4 @@
-# yobara
+# yeobara-desktop
 
 > yobara(`여봐라` in Korea), which mean is almost the same meaning of `Excuse me. I'm here` in English
 
