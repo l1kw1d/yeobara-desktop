@@ -1,0 +1,42 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="meetup-dashboard">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+      
+      paper-dialog {
+        width: 640px;
+        height: 480px;
+        overflow: auto;
+        background-color: white;
+      }
+    </style>
+    <paper-dialog modal id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
+      <h3>Meetups</h3>
+        <firebase-collection
+          location="https://incandescent-inferno-7167.firebaseio.com/meetups"
+          data="{{meetups}}"></firebase-collection>
+        <template is="dom-repeat" items="[[meetups]]" as="meetups">
+        <h4>[[meetups.__firebaseKey__]]</h4>
+          <span>Name: </span><span>[[meetups.friendlyName]]</span>
+        </template>
+    </paper-dialog>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'meetup-dashboard',
+        open: function () {
+          this.$.dialog.open();
+        }
+      });
+    })();
+  </script>
+</dom-module>

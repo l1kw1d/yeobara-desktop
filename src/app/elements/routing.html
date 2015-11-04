@@ -39,9 +39,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     page('/contact', scrollToTop, function() {
       app.route = 'contact';
     });
-    
+
+    page('/meetups', scrollToTop, function() {
+      app.openMeetupDashboard();
+    });
+
     page('*', function() {
-      page.redirect('/');
+      page.redirect('/meetups');
     });
 
     // add #! before urls
