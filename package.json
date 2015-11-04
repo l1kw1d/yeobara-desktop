@@ -1,0 +1,50 @@
+{
+  "name": "yobara",
+  "productName": "yobara",
+  "version": "0.0.0",
+  "description": "My polished app",
+  "license": "MIT",
+  "repository": "ragingwind/yobara",
+  "author": {
+    "name": "ragingwind",
+    "email": "ragingwind@gmail.com",
+    "url": "ragingwind.md"
+  },
+  "engines": {
+    "node": ">=4"
+  },
+  "electronVersion": "0.34.0",
+  "scripts": {
+    "test": "xo",
+    "start": "electron ./src/platform",
+    "build": "electron-packager ./src/platform $npm_package_productName --out=dist --ignore='^/dist$' --prune --asar --all --version=$npm_package_electronVersion"
+  },
+  "files": [
+    "index.js",
+    "index.html",
+    "index.css"
+  ],
+  "keywords": [
+    "electron-app"
+  ],
+  "dependencies": {
+    "eddystone-beacon": "^1.0.3",
+    "electron-debug": "^0.2.1"
+  },
+  "devDependencies": {
+    "electron-packager": "^5.0.0",
+    "electron-prebuilt": "^0.34.0",
+    "xo": "^0.9.0"
+  },
+  "xo": {
+    "esnext": true,
+    "envs": [
+      "node",
+      "browser"
+    ]
+  },
+  "jshintConfig": {
+    "esnext": true,
+    "node": true
+  }
+}
