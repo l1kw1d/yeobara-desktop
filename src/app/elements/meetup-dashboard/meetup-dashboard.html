@@ -26,10 +26,6 @@
         margin-bottom: 20px;
       }
 
-      .container {
-        width: 100%;
-      }
-
       #inputBox {
         display: none;
       }
@@ -54,6 +50,11 @@
           <div>Meetups</div>
         </div>
       </paper-toolbar>
+
+      <div id="inputBox">
+        <paper-input id="meetupName" on-blur="onBlur" label="Meetup name"></paper-input>
+        <paper-textarea id="meetupDesc" on-blur="onBlur" label="Description" rows="3" max-rows="3"></paper-textarea>
+      </div>
 
       <firebase-collection location="https://incandescent-inferno-7167.firebaseio.com/meetups" data="{{meetups}}"></firebase-collection>
 
@@ -83,6 +84,15 @@
         is: 'meetup-dashboard',
         open: function () {
           this.$.dialog.open();
+        },
+        onBlur: function () {
+          if (!this.$.meetupName.focused && !this.$.meetupDesc.focused) {
+            this.$.inputBox.style.display = 'none';
+          }
+        },
+        addMeetup: function () {
+          this.$.inputBox.style.display = 'block';
+          this.$.meetupName.$.input.focus();
         }
       });
     })();
