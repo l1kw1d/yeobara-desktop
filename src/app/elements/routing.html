@@ -40,17 +40,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'contact';
     });
 
-    page('/meetups', scrollToTop, function() {
-      app.openMeetupDashboard();
-    });
-
     page('*', function() {
-      page.redirect('/meetups');
+      page.redirect('/');
     });
 
     // add #! before urls
     page({
-      hashbang: false
+      hashbang: true
     });
 
   });

@@ -16,20 +16,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="Polymer Starter Kit" />
-  <title>Yeobara (여봐라) Desktop</title>
+  <title>Polymer Starter Kit</title>
 
-  <!-- Chrome for Android theme color -->
-  <meta name="theme-color" content="#2E3AA1">
-
-<<<<<<< HEAD
-=======
-  <!-- Tile color for Win8 -->
-  <meta name="msapplication-TileColor" content="#3372DF">
-
->>>>>>> de5d72996efa18292fcc5c37442b6960a7cb824b
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
 
   <!-- will be replaced with elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
@@ -69,7 +64,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="mail"></iron-icon>
             <span>Contact</span>
           </a>
-
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -147,6 +141,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <!-- Dashboard for meetups -->
     <paper-fab id="meetupsFab" icon="dashboard" on-click="openMeetupDashboard"></paper-fab>
     <meetup-dashboard id="meetupsDialog"></meetup-dashboard>
+  </template>
+
   </template>
 
   <!-- build:js scripts/app.js -->

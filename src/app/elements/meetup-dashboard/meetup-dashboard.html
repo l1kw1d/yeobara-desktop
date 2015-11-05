@@ -7,23 +7,71 @@
       :host {
         display: block;
       }
-      
+
       paper-dialog {
         width: 640px;
-        height: 480px;
+        height: 500px;
         overflow: auto;
         background-color: white;
+        margin-top: 0px;
+      }
+
+      paper-dialog > *:first-child {
+        margin-top: 0px;
+      }
+
+      .meetup-info {
+        padding: 20px 20px;
+        margin: 0 20px;
+        margin-bottom: 20px;
+      }
+
+      .container {
+        width: 100%;
+      }
+
+      #inputBox {
+        display: none;
+      }
+
+      paper-material .info-button {
+        display: none;
+      }
+
+      paper-material:hover .info-button {
+        display: block;
       }
     </style>
     <paper-dialog modal id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
-      <h3>Meetups</h3>
-        <firebase-collection
-          location="https://incandescent-inferno-7167.firebaseio.com/meetups"
-          data="{{meetups}}"></firebase-collection>
-        <template is="dom-repeat" items="[[meetups]]" as="meetups">
-        <h4>[[meetups.__firebaseKey__]]</h4>
-          <span>Name: </span><span>[[meetups.friendlyName]]</span>
-        </template>
+      <paper-toolbar>
+        <span class="flex"></span>
+        <!-- Toolbar icons -->
+        <paper-icon-button icon="add" on-click="addMeetup"></paper-icon-button>
+        <paper-icon-button icon="close"></paper-icon-button>
+
+        <!-- Application name -->
+        <div class="middle middle-container center horizontal layout">
+          <div>Meetups</div>
+        </div>
+      </paper-toolbar>
+
+      <firebase-collection location="https://incandescent-inferno-7167.firebaseio.com/meetups" data="{{meetups}}"></firebase-collection>
+
+      <template is="dom-repeat" items="[[meetups]]" as="meetups">
+        <paper-material class="meetup-info" elevation="1">
+          <div class="horizontal layout">
+            <h4>[[meetups.friendlyName]]</h4>
+            <span class="flex"></span>
+            <paper-icon-button class="info-button" icon="icons:done"></paper-icon-button>
+            <paper-icon-button class="info-button" icon="delete"></paper-icon-button>
+          </div>
+          <label>It's out 3rd meetup. this time we're gonna show amazing electron application</label>
+          <ul>
+            <li>Date: 2015-10-30</li>
+            <li>Location: Toz tower branch in Kangnam</li>
+          </ul>
+        </paper-material>
+      </template>
     </paper-dialog>
   </template>
 
