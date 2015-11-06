@@ -8,6 +8,14 @@
         display: block;
       }
 
+      paper-dialog > *:nth-child(1) {
+        margin-top: 0px;
+      }
+
+      paper-dialog > *:nth-child(2) {
+        margin-top: 20px;
+      }
+
       paper-dialog {
         width: 640px;
         height: 500px;
@@ -16,11 +24,7 @@
         margin-top: 0px;
       }
 
-      paper-dialog > *:first-child {
-        margin-top: 0px;
-      }
-
-      .meetup-info {
+      .dialogItem {
         padding: 20px 20px;
         margin: 0 20px;
         margin-bottom: 20px;
@@ -30,11 +34,11 @@
         display: none;
       }
 
-      paper-material .info-button {
+      paper-material .meetupConfig {
         display: none;
       }
 
-      paper-material:hover .info-button {
+      paper-material:hover .meetupConfig {
         display: block;
       }
     </style>
@@ -42,7 +46,7 @@
       <paper-toolbar>
         <span class="flex"></span>
         <!-- Toolbar icons -->
-        <paper-icon-button icon="add" on-click="addMeetup"></paper-icon-button>
+        <paper-icon-button icon="add" on-click="showInputForm"></paper-icon-button>
         <paper-icon-button icon="close"></paper-icon-button>
 
         <!-- Application name -->
@@ -51,24 +55,34 @@
         </div>
       </paper-toolbar>
 
-      <div id="inputBox">
-        <paper-input id="meetupName" on-blur="onBlur" label="Meetup name"></paper-input>
-        <paper-textarea id="meetupDesc" on-blur="onBlur" label="Description" rows="3" max-rows="3"></paper-textarea>
-      </div>
+      <paper-material id="inputBox" class="dialogItem" elevation="1">
+        <paper-input class="meetupInput" id="meetupTitle" label="Title of the meetup" required></paper-input>
+        <paper-input class="meetupInput" id="meetupHost" label="Name of the host" required></paper-input>
+        <paper-input class="meetupInput" id="meetupDate" label="YYYY-MM-DD" required auto-validate pattern="\w{4}-\w{1,2}-\w{1,2}" error-message="Wrong format of date" ></paper-input>
+        <paper-textarea class="meetupInput" id="meetupDesc" label="Description of the meetup" rows="3" max-rows="3"></paper-textarea>
+        <div class="horizontal end-justified layout">
+          <paper-icon-button icon="icons:done" on-click="updateMeetup"></paper-icon-button>
+          <paper-icon-button icon="save"></paper-icon-button>
+        </div>
+      </paper-material>
 
-      <firebase-collection location="https://incandescent-inferno-7167.firebaseio.com/meetups" data="{{meetups}}"></firebase-collection>
+      <firebase-collection
+        id="meetupCollection"
+        location="https://incandescent-inferno-7167.firebaseio.com/meetups"
+        data="{{meetups}}">
+      </firebase-collection>
 
-      <template is="dom-repeat" items="[[meetups]]" as="meetups">
-        <paper-material class="meetup-info" elevation="1">
+      <template is="dom-repeat" items="[[meetups]]" as="meetup">
+        <paper-material class="dialogItem" elevation="1">
           <div class="horizontal layout">
-            <h4>[[meetups.friendlyName]]</h4>
+            <h4>[[meetup.friendlyName]]</h4>
             <span class="flex"></span>
-            <paper-icon-button class="info-button" icon="icons:done"></paper-icon-button>
-            <paper-icon-button class="info-button" icon="delete"></paper-icon-button>
+            <paper-icon-button class="meetupConfig" icon="icons:done"></paper-icon-button>
+            <paper-icon-button class="meetupConfig" icon="delete"></paper-icon-button>
           </div>
-          <label>It's out 3rd meetup. this time we're gonna show amazing electron application</label>
+          <label>[[meetup.description]]</label>
           <ul>
-            <li>Date: 2015-10-30</li>
+            <li>Date: [[meetup.date]]</li>
             <li>Location: Toz tower branch in Kangnam</li>
           </ul>
         </paper-material>
@@ -82,17 +96,48 @@
 
       Polymer({
         is: 'meetup-dashboard',
+        ready: function () {
+          // set initialize value
+          var today = new Date();
+          this.$.meetupDate.label = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+        },
         open: function () {
           this.$.dialog.open();
         },
-        onBlur: function () {
-          if (!this.$.meetupName.focused && !this.$.meetupDesc.focused) {
-            this.$.inputBox.style.display = 'none';
-          }
-        },
-        addMeetup: function () {
+        showInputForm: function () {
           this.$.inputBox.style.display = 'block';
-          this.$.meetupName.$.input.focus();
+          this.$.meetupHost.$.input.focus();
+        },
+        updateMeetup: function () {
+          var forms = Polymer.dom(this.root).querySelectorAll('.meetupInput');
+
+          if (!forms.every(function (f) {return f.validate();})) {
+            return;
+          }
+
+          var data = {};
+          var friendlize = function (str) {
+            return str.replace(/^(\W|\.)*/g, '')
+              .replace(/(|\W|\s)*$/g, '')
+              .replace(/ /g, '-')
+		          .replace(/\b[A-Z]/g, function (match) {
+			          return match.toLowerCase();
+	             });
+          };
+
+          data[friendlize(this.$.meetupTitle.value)] = {
+            friendlyName: this.$.meetupTitle.value,
+            host: this.$.meetupHost.value,
+            date: this.$.meetupDate.value,
+            description: this.$.meetupDesc.value || 'No details for the meetup'
+          }
+          
+          try {
+            meetupCollection.query.update(data);
+          } catch (e) {
+            console.error(e);
+          }
+
         }
       });
     })();
