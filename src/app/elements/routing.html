@@ -23,7 +23,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
 
     // Routes
-    page('/', scrollToTop, function() {
+    page('/', scrollToTop, function(param) {
+      app.route = 'home';
+    });
+
+    page('/meetup', scrollToTop, function(ctx) {
+      app.openMeetupDashboard();
+      app.route = 'home';
+    });
+
+    page('/meetup/:key', scrollToTop, function(ctx) {
+      app.initMeetup(ctx.params.key);
       app.route = 'home';
     });
 

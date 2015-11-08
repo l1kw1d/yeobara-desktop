@@ -47,7 +47,7 @@
         <span class="flex"></span>
         <!-- Toolbar icons -->
         <paper-icon-button icon="add" on-click="showInputForm"></paper-icon-button>
-        <paper-icon-button icon="close"></paper-icon-button>
+        <paper-icon-button icon="close" on-click="closeDashboard"></paper-icon-button>
 
         <!-- Application name -->
         <div class="middle middle-container center horizontal layout">
@@ -62,7 +62,7 @@
         <paper-textarea class="meetupInput" id="meetupDesc" label="Description of the meetup" rows="3" max-rows="3"></paper-textarea>
         <div class="horizontal end-justified layout">
           <paper-icon-button icon="icons:done" on-click="updateMeetup"></paper-icon-button>
-          <paper-icon-button icon="save"></paper-icon-button>
+          <paper-icon-button icon="icons:clear" on-click="closeInputForm"></paper-icon-button>
         </div>
       </paper-material>
 
@@ -72,13 +72,15 @@
         data="{{meetups}}">
       </firebase-collection>
 
-      <template is="dom-repeat" items="[[meetups]]" as="meetup">
+      <template is="dom-repeat" items="[[meetups]]" as="meetup" sort="_sortByCreated">
         <paper-material class="dialogItem" elevation="1">
           <div class="horizontal layout">
             <h4>[[meetup.friendlyName]]</h4>
             <span class="flex"></span>
-            <paper-icon-button class="meetupConfig" icon="icons:done"></paper-icon-button>
-            <paper-icon-button class="meetupConfig" icon="delete"></paper-icon-button>
+            <paper-icon-button class="meetupConfig" on-click="applyMeetup" icon="icons:done">
+            </paper-icon-button>
+            <paper-icon-button class="meetupConfig" on-click="deleteMeetup" icon="delete">
+            </paper-icon-button>
           </div>
           <label>[[meetup.description]]</label>
           <ul>
@@ -96,6 +98,11 @@
 
       Polymer({
         is: 'meetup-dashboard',
+        _sortByCreated: function (target, src) {
+          target = target || 0;
+          src = src || 0;
+          return target >= src;
+        },
         ready: function () {
           // set initialize value
           var today = new Date();
@@ -104,9 +111,15 @@
         open: function () {
           this.$.dialog.open();
         },
+        closeDashboard: function () {
+          this.$.dialog.close();
+        },
         showInputForm: function () {
           this.$.inputBox.style.display = 'block';
-          this.$.meetupHost.$.input.focus();
+          this.$.meetupTitle.$.input.focus();
+        },
+        closeInputForm: function () {
+          this.$.inputBox.style.display = 'none';
         },
         updateMeetup: function () {
           var forms = Polymer.dom(this.root).querySelectorAll('.meetupInput');
@@ -129,15 +142,24 @@
             friendlyName: this.$.meetupTitle.value,
             host: this.$.meetupHost.value,
             date: this.$.meetupDate.value,
-            description: this.$.meetupDesc.value || 'No details for the meetup'
+            description: this.$.meetupDesc.value || 'No details for the meetup',
+            created: Date.now()
           }
-          
+
           try {
-            meetupCollection.query.update(data);
+            this.$.meetupCollection.query.update(data);
           } catch (e) {
             console.error(e);
           }
 
+          this.closeInputForm();
+        },
+        deleteMeetup: function (e) {
+          this.$.meetupCollection.removeByKey(e.srcElement.parentElement.dataHost.meetup.__firebaseKey__);
+        },
+        applyMeetup: function (e) {
+          page('/meetup/' + e.srcElement.parentElement.dataHost.meetup.__firebaseKey__);
+          this.closeDashboard();
         }
       });
     })();

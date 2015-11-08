@@ -72,6 +72,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.openMeetupDashboard = function () {
-    app.$.meetupsDialog.open();
+    if (!app.$.meetupsDialog.opened) {
+      app.$.meetupsDialog.open();
+    }
+  };
+
+  app.initMeetup = function (key) {
+    console.log('init with', key);
   };
 })(document);
