@@ -55,9 +55,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <span>Home</span>
           </a>
 
-          <a data-route="users" href="/users" on-click="onDataRouteClick">
+          <a data-route="attendees" href="/attendees" on-click="onDataRouteClick">
             <iron-icon icon="info"></iron-icon>
-            <span>Users</span>
+            <span>Attendees</span>
           </a>
 
           <a data-route="contact" href="/contact" on-click="onDataRouteClick">
@@ -102,15 +102,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </section>
 
             <section data-route="attendees">
-              <paper-material elevation="1">
-                Jimmy Moon
-              </paper-material>
-              <paper-material elevation="1">
-                Jimmy Moon
-              </paper-material>
-              <paper-material elevation="1">
-                Jimmy Moon
-              </paper-material>
+              <meetup-attendee id="attendees" meetup="[[meetup]]"></meetup-attendee>
             </section>
 
           </iron-pages>

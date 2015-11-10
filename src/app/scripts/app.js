@@ -78,6 +78,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.initMeetup = function (key) {
-    console.log('init with', key);
+    app.meetup = key;
+    setTimeout(function () {
+      page('/attendees/');
+    }, 100);
   };
 })(document);

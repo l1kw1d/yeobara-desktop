@@ -37,11 +37,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'home';
     });
 
-    page('/users', scrollToTop, function() {
-      app.route = 'users';
+    page('/attendees', scrollToTop, function() {
+      app.route = 'attendees';
     });
 
-    page('/users/:name', scrollToTop, function(data) {
+    page('/attendees/:name', scrollToTop, function(data) {
       app.route = 'user-info';
       app.params = data.params;
     });
