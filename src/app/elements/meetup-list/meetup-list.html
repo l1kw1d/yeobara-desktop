@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="meetup-dashboard">
+<dom-module id="meetup-list">
   <template>
     <style include="shared-styles"></style>
     <style>
@@ -97,7 +97,7 @@
       'use strict';
 
       Polymer({
-        is: 'meetup-dashboard',
+        is: 'meetup-list',
         _sortByCreated: function (target, src) {
           target = target || 0;
           src = src || 0;
