@@ -1,0 +1,69 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="meetup-dashboard">
+  <template>
+    <style include="shared-styles"></style>
+    <style>
+      :host {
+        display: block;
+      }
+
+      paper-material {
+        padding: 20px 20px;
+        margin: 0 20px;
+        margin-bottom: 20px;
+      }
+
+      paper-material .meetupConfig {
+        display: none;
+      }
+
+      paper-material:hover .meetupConfig {
+        display: block;
+      }
+    </style>
+
+    <firebase-document id="meetupCollection" data="{{meetupInfo}}"> </firebase-document>
+
+    <paper-material elevation="1">
+      <div class="">
+        <h4>[[meetupInfo.friendlyName]]</h4>
+        <span>[[meetupInfo.description]]</span>
+      </div>
+      <ul>
+        <li>Date: [[meetupInfo.date]]</li>
+        <li>Host: [[meetupInfo.host]]</li>
+        <li>Attndees count: {{attendeesCount}}</li>
+      </ul>
+    </paper-material>
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'meetup-dashboard',
+        properties: {
+          meetupInfo: {
+            type: String,
+            observer: 'meetupInfoChanged'
+          },
+          meetup: {
+            type: String,
+            observer: 'meetupChanged'
+          },
+          attendeesCount: {
+            type: String
+          }
+        },
+        meetupChanged: function () {
+          this.$.meetupCollection.location = 'https://incandescent-inferno-7167.firebaseio.com/meetups/' + this.meetup;
+        },
+        meetupInfoChanged: function () {
+          this.attendeesCount = Object.keys(this.meetupInfo.attendees).length;
+        }
+      });
+    })();
+  </script>
+</dom-module>

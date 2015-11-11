@@ -9,6 +9,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <script src="../bower_components/page/page.js"></script>
+<script src="../scripts/query.js"></script>
 <script>
   window.addEventListener('WebComponentsReady', function() {
 
@@ -33,7 +34,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     });
 
     page('/meetup/:key', scrollToTop, function(ctx) {
-      app.initMeetup(ctx.params.key);
+      var opts = qs.parse(ctx.querystring);
+      app.meetup = ctx.params.key;
+      app.title = opts['title'];
+      app.subtitle = opts['subtitle'];
       app.route = 'home';
     });
 

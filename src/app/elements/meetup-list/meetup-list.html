@@ -158,7 +158,9 @@
           this.$.meetupCollection.removeByKey(e.srcElement.parentElement.dataHost.meetup.__firebaseKey__);
         },
         applyMeetup: function (e) {
-          page('/meetup/' + e.srcElement.parentElement.dataHost.meetup.__firebaseKey__);
+          var meetup = e.srcElement.parentElement.dataHost.meetup;
+          var qs = 'title=' + meetup.friendlyName + '&subtitle=' + meetup.description;
+          page('/meetup/' + meetup.__firebaseKey__ + '?' + qs);
           this.closeDashboard();
         }
       });

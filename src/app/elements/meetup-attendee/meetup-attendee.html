@@ -8,30 +8,10 @@
         display: block;
       }
 
-      paper-dialog > *:nth-child(1) {
-        margin-top: 0px;
-      }
-
-      paper-dialog > *:nth-child(2) {
-        margin-top: 20px;
-      }
-
-      paper-dialog {
-        width: 640px;
-        height: 500px;
-        overflow: auto;
-        background-color: white;
-        margin-top: 0px;
-      }
-
-      .dialogItem {
+      paper-material {
         padding: 20px 20px;
         margin: 0 20px;
         margin-bottom: 20px;
-      }
-
-      #inputBox {
-        display: none;
       }
 
       paper-material .meetupConfig {
@@ -43,13 +23,10 @@
       }
     </style>
 
-    <firebase-collection
-      id="meetupCollection"
-      data="{{attendees}}">
-    </firebase-collection>
+    <firebase-collection id="meetupCollection" data="{{attendees}}"> </firebase-collection>
 
     <template is="dom-repeat" items="[[attendees]]" as="attendee">
-      <paper-material class="dialogItem" elevation="1">
+      <paper-material elevation="1">
         <div class="horizontal layout">
           <h4>[[attendee.friendlyName]]</h4>
           <span class="flex"></span>
@@ -79,8 +56,7 @@
           }
         },
         meetupChanged: function () {
-          this.$.meetupCollection.location =
-          'https://incandescent-inferno-7167.firebaseio.com/meetups/' + this.meetup + '/attendees';
+          this.$.meetupCollection.location = 'https://incandescent-inferno-7167.firebaseio.com/meetups/' + this.meetup + '/attendees';
         }
       });
     })();

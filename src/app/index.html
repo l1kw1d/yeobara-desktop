@@ -59,11 +59,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <iron-icon icon="info"></iron-icon>
             <span>Attendees</span>
           </a>
-
+          <!--
           <a data-route="contact" href="/contact" on-click="onDataRouteClick">
             <iron-icon icon="mail"></iron-icon>
             <span>Contact</span>
           </a>
+           -->
         </paper-menu>
       </paper-scroll-header-panel>
 
@@ -81,12 +82,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
           <!-- Application name -->
           <div class="middle middle-container center horizontal layout">
-            <div class="app-name"></div>
+            <div class="app-name">{{title}}</div>
           </div>
 
           <!-- Application sub title -->
           <div class="bottom bottom-container center horizontal layout">
-            <div class="bottom-title paper-font-subhead">Check your attendees</div>
+            <div class="bottom-title paper-font-subhead">{{subtitle}}</div>
           </div>
 
         </paper-toolbar>
@@ -96,13 +97,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-              <paper-material elevation="1">
-                Overview for Meetup
-              </paper-material>
+              <meetup-dashboard id="dashboard" meetup="{{meetup}}"></meetup-dashboard>
             </section>
 
             <section data-route="attendees">
-              <meetup-attendee id="attendees" meetup="[[meetup]]"></meetup-attendee>
+              <meetup-attendee id="attendees" meetup="{{meetup}}"></meetup-attendee>
             </section>
 
           </iron-pages>
