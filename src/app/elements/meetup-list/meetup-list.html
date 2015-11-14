@@ -42,6 +42,9 @@
         display: block;
       }
     </style>
+
+    <script src="../../scripts/bundle.js" charset="utf-8"></script>
+
     <paper-dialog modal id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
       <paper-toolbar>
         <span class="flex"></span>
@@ -67,10 +70,16 @@
       </paper-material>
 
       <firebase-collection
-        id="meetupCollection"
+        id="meetups"
         location="https://incandescent-inferno-7167.firebaseio.com/meetups"
         data="{{meetups}}">
       </firebase-collection>
+
+      <firebase-document
+        id="meetupHash"
+        location="https://incandescent-inferno-7167.firebaseio.com/meetup-hash"
+        data="{{meetupHash}}">
+      </firebase-document>
 
       <template is="dom-repeat" items="[[meetups]]" as="meetup" sort="_sortByCreated">
         <paper-material class="dialogItem" elevation="1">
@@ -122,13 +131,15 @@
           this.$.inputBox.style.display = 'none';
         },
         updateMeetup: function () {
+          var hasha = require('hasha');
           var forms = Polymer.dom(this.root).querySelectorAll('.meetupInput');
 
           if (!forms.every(function (f) {return f.validate();})) {
             return;
           }
 
-          var data = {};
+          var meetupData = {};
+          var meetupHashData = {};
           var friendlize = function (str) {
             return str.replace(/^(\W|\.)*/g, '')
               .replace(/(|\W|\s)*$/g, '')
@@ -137,17 +148,24 @@
 			          return match.toLowerCase();
 	             });
           };
+          var meetupKey = friendlize(this.$.meetupTitle.value);
 
-          data[friendlize(this.$.meetupTitle.value)] = {
+          meetupData[meetupKey] = {
             friendlyName: this.$.meetupTitle.value,
+            hashcode: hasha(meetupKey).slice(0, 6),
             host: this.$.meetupHost.value,
             date: this.$.meetupDate.value,
             description: this.$.meetupDesc.value || 'No details for the meetup',
             created: Date.now()
-          }
+          };
+
+          meetupHashData[meetupData[meetupKey].hashcode] = {
+            meetup: meetupKey
+          };
 
           try {
-            this.$.meetupCollection.query.update(data);
+            this.$.meetups.query.update(meetupData);
+            this.$.meetupHash.query.update(meetupHashData);
           } catch (e) {
             console.error(e);
           }
@@ -155,7 +173,7 @@
           this.closeInputForm();
         },
         deleteMeetup: function (e) {
-          this.$.meetupCollection.removeByKey(e.srcElement.parentElement.dataHost.meetup.__firebaseKey__);
+          this.$.meetups.removeByKey(e.srcElement.parentElement.dataHost.meetup.__firebaseKey__);
         },
         applyMeetup: function (e) {
           var meetup = e.srcElement.parentElement.dataHost.meetup;
