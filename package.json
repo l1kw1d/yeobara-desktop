@@ -31,7 +31,8 @@
   "dependencies": {
     "eddystone-beacon": "^1.0.3",
     "electron-debug": "^0.4.0",
-    "electron-menu-loader": "0.0.3"
+    "electron-menu-loader": "0.0.3",
+    "hasha": "^2.0.2"
   },
   "devDependencies": {
     "browserify": "^12.0.1",
