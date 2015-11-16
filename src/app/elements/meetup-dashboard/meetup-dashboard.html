@@ -55,10 +55,13 @@
           },
           attendeesCount: {
             type: String
+          },
+          fbLocation: {
+            type: String
           }
         },
         meetupChanged: function () {
-          this.$.meetupCollection.location = 'https://incandescent-inferno-7167.firebaseio.com/meetups/' + this.meetup;
+          this.$.meetupCollection.location = this.fbLocation + '/meetups/' + this.meetup;
         },
         meetupInfoChanged: function () {
           this.attendeesCount = Object.keys(this.meetupInfo.attendees).length;

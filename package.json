@@ -29,6 +29,7 @@
     "electron-app"
   ],
   "dependencies": {
+    "dotenv": "^1.2.0",
     "eddystone-beacon": "^1.0.3",
     "electron-debug": "^0.4.0",
     "electron-menu-loader": "0.0.3",

@@ -9,6 +9,15 @@
 $ npm install
 ```
 
+## Config
+
+You should touch your own `.env` file at root of application. It will be loaded as environment value on application starting. here are kind of requirement values.
+
+```
+FB_APIKEY=YOUR_FB_KEY
+FB_APPNAME=YOUR_FB_APPNAME // https://incandescent-inferno-1111.firebaseio.com/
+```
+
 ### Run
 
 ```

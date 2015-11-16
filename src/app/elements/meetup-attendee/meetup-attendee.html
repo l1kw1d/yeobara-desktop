@@ -53,10 +53,13 @@
           meetup: {
             type: String,
             observer: 'meetupChanged'
+          },
+          fbLocation: {
+            type: String
           }
         },
         meetupChanged: function () {
-          this.$.meetupCollection.location = 'https://incandescent-inferno-7167.firebaseio.com/meetups/' + this.meetup + '/attendees';
+          this.$.meetupCollection.location = this.fbLocation + '/meetups/' + this.meetup + '/attendees';
         }
       });
     })();

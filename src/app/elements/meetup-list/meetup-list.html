@@ -69,17 +69,8 @@
         </div>
       </paper-material>
 
-      <firebase-collection
-        id="meetups"
-        location="https://incandescent-inferno-7167.firebaseio.com/meetups"
-        data="{{meetups}}">
-      </firebase-collection>
-
-      <firebase-document
-        id="meetupHash"
-        location="https://incandescent-inferno-7167.firebaseio.com/meetup-hash"
-        data="{{meetupHash}}">
-      </firebase-document>
+      <firebase-collection id="meetups" location="{{fbLocation}}/meetups" data="{{meetups}}"></firebase-collection>
+      <firebase-document id="meetupHash" location="{{fbLocation}}/meetup-hash" data="{{meetupHash}}"></firebase-document>
 
       <template is="dom-repeat" items="[[meetups]]" as="meetup" sort="_sortByCreated">
         <paper-material class="dialogItem" elevation="1">
@@ -107,6 +98,11 @@
 
       Polymer({
         is: 'meetup-list',
+        properties: {
+          fbLocation: {
+            type: String
+          }
+        },
         _sortByCreated: function (target, src) {
           target = target || 0;
           src = src || 0;
@@ -116,6 +112,7 @@
           // set initialize value
           var today = new Date();
           this.$.meetupDate.label = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+          // console.log(this.location);
         },
         open: function () {
           this.$.dialog.open();

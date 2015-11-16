@@ -22,6 +22,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <link rel="stylesheet" href="styles/main.css">
   <!-- endbuild-->
 
+  <script src="scripts/env.js"></script>
+
   <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
   <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
   <!-- endbuild -->
@@ -97,11 +99,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-              <meetup-dashboard id="dashboard" meetup="{{meetup}}"></meetup-dashboard>
+              <meetup-dashboard id="dashboard" meetup="{{meetup}}" fb-location="{{fbLocation}}"></meetup-dashboard>
             </section>
 
             <section data-route="attendees">
-              <meetup-attendee id="attendees" meetup="{{meetup}}"></meetup-attendee>
+              <meetup-attendee id="attendees" meetup="{{meetup}}" fb-location="{{fbLocation}}"></meetup-attendee>
             </section>
 
           </iron-pages>
@@ -110,7 +112,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </paper-drawer-panel>
 
     <!-- Dashboard for meetups -->
-    <meetup-list id="meetupList"></meetup-list>
+    <meetup-list id="meetupList" fb-location="{{fbLocation}}"></meetup-list>
   </template>
 
   </template>

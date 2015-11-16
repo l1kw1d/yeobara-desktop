@@ -3,6 +3,7 @@ const app = require('app');
 const BrowserWindow = require('browser-window');
 const beacon = require('eddystone-beacon');
 const path = require('path');
+const ipc = require('ipc');
 
 // report crashes to the Electron project
 require('crash-reporter').start();
@@ -55,11 +56,20 @@ app.on('activate-with-no-open-windows', () => {
 });
 
 app.on('ready', () => {
+	// load .env to process.env
+	require('dotenv').load();
+
+	// create main window
 	mainWindow = createMainWindow();
 
+	// start url broadcasting
 	beacon.advertiseUrl('http://naver.com');
 });
 
 app.on('menuitem-click', e => {
 	BrowserWindow.getFocusedWindow().webContents.send(e.event);
+});
+
+ipc.on('env', function (e) {
+	BrowserWindow.getFocusedWindow().webContents.send('env', process.env);
 });

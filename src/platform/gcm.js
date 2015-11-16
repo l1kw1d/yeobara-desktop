@@ -1,6 +1,5 @@
 'use strict';
 
-const config = require ('./gcm.json');
 const gcm = require('node-gcm');
 
 module.exports = {
@@ -15,7 +14,7 @@ module.exports = {
       }
     });
 
-    var sender = new gcm.Sender(config.key);
+    var sender = new gcm.Sender(process.env.FB_APIKEY);
 
     sender.send(message, {
       topic: '/topics/global'

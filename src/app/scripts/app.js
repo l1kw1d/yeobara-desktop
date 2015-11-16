@@ -15,6 +15,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   // Learn more about auto-binding templates at http://goo.gl/Dx1u2g
   var app = document.querySelector('#app');
 
+  // prepare properties came from env
+  app.fbLocation = window.env.FB_APPNAME;
+
   app.displayInstalledToast = function() {
     // Check to make sure caching is actually enabled—it won't be in the dev environment.
     if (!document.querySelector('platinum-sw-cache').disabled) {
@@ -76,4 +79,5 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.$.meetupList.open();
     }
   };
+
 })(document);
