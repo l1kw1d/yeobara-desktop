@@ -64,7 +64,7 @@
           this.$.meetupCollection.location = this.fbLocation + '/meetups/' + this.meetup;
         },
         meetupInfoChanged: function () {
-          this.attendeesCount = Object.keys(this.meetupInfo.attendees).length;
+          this.attendeesCount = this.meetupInfo.attendees ? Object.keys(this.meetupInfo.attendees).length : 0;
         }
       });
     })();
