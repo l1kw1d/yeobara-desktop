@@ -41,6 +41,10 @@
       paper-material:hover .meetupConfig {
         display: block;
       }
+
+      google-map {
+        height: 200px;
+      }
     </style>
 
     <script src="../../scripts/bundle.js" charset="utf-8"></script>
@@ -61,6 +65,11 @@
       <paper-material id="inputBox" class="dialogItem" elevation="1">
         <paper-input class="meetupInput" id="meetupTitle" label="Title of the meetup" required></paper-input>
         <paper-input class="meetupInput" id="meetupHost" label="Name of the host" required></paper-input>
+        <google-map-search id="mapSearch" map="[[map]]" results="{{results}}">
+        </google-map-search>
+        <google-map id="map" disable-default-ui zoom="15">
+          <google-map-marker id="marker" draggable="true"></google-map-marker>
+        </google-map>
         <paper-input class="meetupInput" id="meetupDate" label="YYYY-MM-DD" required auto-validate pattern="\w{4}-\w{1,2}-\w{1,2}" error-message="Wrong format of date" ></paper-input>
         <paper-textarea class="meetupInput" id="meetupDesc" label="Description of the meetup" rows="3" max-rows="3"></paper-textarea>
         <div class="horizontal end-justified layout">
@@ -69,6 +78,7 @@
         </div>
       </paper-material>
 
+      <google-maps-api id="api"></google-maps-api>
       <firebase-collection id="meetups" location="{{fbLocation}}/meetups" data="{{meetups}}"></firebase-collection>
       <firebase-document id="meetupHash" location="{{fbLocation}}/meetup-hash" data="{{meetupHash}}"></firebase-document>
 
@@ -87,6 +97,7 @@
             <li>Date: [[meetup.date]]</li>
             <li>Location: Toz tower branch in Kangnam</li>
           </ul>
+          <google-map id="map" latitude="[[meetup.latLng.lat]]" longitude="[[meetup.latLng.lng]]" drag-events="false" disable-default-ui disable-zoom="true" zoom="15">
         </paper-material>
       </template>
     </paper-dialog>
@@ -112,7 +123,7 @@
           // set initialize value
           var today = new Date();
           this.$.meetupDate.label = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
-          // console.log(this.location);
+          this.$.meetupDate.value = today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
         },
         open: function () {
           this.$.dialog.open();
@@ -123,6 +134,15 @@
         showInputForm: function () {
           this.$.inputBox.style.display = 'block';
           this.$.meetupTitle.$.input.focus();
+
+          // refesh lnglat
+          navigator.geolocation.getCurrentPosition(function(geo) {
+            this.$.map.longitude = geo.coords.longitude;
+            this.$.map.latitude = geo.coords.latitude;
+            this.$.marker.longitude = geo.coords.longitude;
+            this.$.marker.latitude = geo.coords.latitude;
+            this.$.map.notifyResize();
+          }.bind(this));
         },
         closeInputForm: function () {
           this.$.inputBox.style.display = 'none';
@@ -153,7 +173,11 @@
             host: this.$.meetupHost.value,
             date: this.$.meetupDate.value,
             description: this.$.meetupDesc.value || 'No details for the meetup',
-            created: Date.now()
+            created: Date.now(),
+            latLng: {
+              lat: this.$.marker.latitude,
+              lng: this.$.marker.longitude
+            }
           };
 
           meetupHashData[meetupData[meetupKey].hashcode] = {
@@ -161,8 +185,16 @@
           };
 
           try {
-            this.$.meetups.query.update(meetupData);
-            this.$.meetupHash.query.update(meetupHashData);
+            var geocoder = new google.maps.Geocoder;
+            geocoder.geocode({'location': meetupData[meetupKey].latLng}, function(results, status) {
+              meetupData[meetupKey].formattedAddress = ''
+              if (status === 'OK') {
+                meetupData[meetupKey].formattedAddress = results[0].formatted_address;
+              }
+
+              this.$.meetups.query.update(meetupData);
+              this.$.meetupHash.query.update(meetupHashData);
+            }.bind(this));
           } catch (e) {
             console.error(e);
           }
