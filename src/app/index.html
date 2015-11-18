@@ -52,9 +52,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         <!-- Drawer Content -->
         <paper-menu class="list" attr-for-selected="data-route" selected="[[route]]">
-          <a data-route="home" href="/" on-click="onDataRouteClick">
-            <iron-icon icon="home"></iron-icon>
-            <span>Home</span>
+          <a data-route="meetup" href="/" on-click="onDataRouteClick">
+            <iron-icon icon="icons:event"></iron-icon>
+            <span>Meetup</span>
           </a>
 
           <a data-route="attendees" href="/attendees" on-click="onDataRouteClick">
@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
-            <section data-route="home">
+            <section data-route="meetup">
               <meetup-dashboard id="dashboard" meetup="{{meetup}}" fb-location="{{fbLocation}}"></meetup-dashboard>
             </section>
 

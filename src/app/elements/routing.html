@@ -25,12 +25,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     // Routes
     page('/', scrollToTop, function(param) {
-      app.route = 'home';
+      app.route = 'meetup';
     });
 
     page('/meetup', scrollToTop, function(ctx) {
       app.openMeetupDashboard();
-      app.route = 'home';
+      app.route = 'meetup';
     });
 
     page('/meetup/:key', scrollToTop, function(ctx) {
@@ -38,7 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.meetup = ctx.params.key;
       app.title = opts['title'];
       app.subtitle = opts['subtitle'];
-      app.route = 'home';
+      app.route = 'meetup';
     });
 
     page('/attendees', scrollToTop, function() {
