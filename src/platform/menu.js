@@ -8,7 +8,7 @@ module.exports = {
       label: `About ${appName}`,
       role: 'about'
     }, {
-      label: 'Set meetup',
+      label: 'Select a meetup',
       event: 'meetup'
     }]
   }],
