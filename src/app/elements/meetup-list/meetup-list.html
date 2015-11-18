@@ -172,7 +172,7 @@
             hashcode: hasha(meetupKey).slice(0, 6),
             host: this.$.meetupHost.value,
             date: this.$.meetupDate.value,
-            description: this.$.meetupDesc.value || 'No details for the meetup',
+            description: this.$.meetupDesc.value,
             created: Date.now(),
             latLng: {
               lat: this.$.marker.latitude,
