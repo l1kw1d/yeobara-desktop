@@ -18,16 +18,35 @@
 
       paper-dialog {
         width: 640px;
-        height: 500px;
+        height: 600px;
         overflow: auto;
         background-color: white;
         margin-top: 0px;
       }
 
-      .dialogItem {
+      .dialogCard {
         padding: 20px 20px;
         margin: 0 20px;
         margin-bottom: 20px;
+      }
+
+      .dialogItem {
+        color: #757575;
+        padding-bottom: 10px;
+      }
+
+      .header {
+        height: 42px;
+      }
+
+      .header h2 {
+        font-size: 32px !important;
+        font-weight: 800px !important;
+        color: black;
+      }
+
+      .header paper-icon-button {
+        padding-top: 0;
       }
 
       #inputBox {
@@ -62,11 +81,9 @@
         </div>
       </paper-toolbar>
 
-      <paper-material id="inputBox" class="dialogItem" elevation="1">
+      <paper-material id="inputBox" class="dialogCard" elevation="1">
         <paper-input class="meetupInput" id="meetupTitle" label="Title of the meetup" required></paper-input>
         <paper-input class="meetupInput" id="meetupHost" label="Name of the host" required></paper-input>
-        <google-map-search id="mapSearch" map="[[map]]" results="{{results}}">
-        </google-map-search>
         <google-map id="map" disable-default-ui zoom="15">
           <google-map-marker id="marker" draggable="true"></google-map-marker>
         </google-map>
@@ -83,21 +100,32 @@
       <firebase-document id="meetupHash" location="{{fbLocation}}/meetup-hash" data="{{meetupHash}}"></firebase-document>
 
       <template is="dom-repeat" items="[[meetups]]" as="meetup" sort="_sortByCreated">
-        <paper-material class="dialogItem" elevation="1">
-          <div class="horizontal layout">
-            <h4>[[meetup.friendlyName]]</h4>
+        <paper-material class="dialogCard" elevation="1">
+          <div class="horizontal layout dialogItem header">
+            <h2>[[meetup.friendlyName]]</h2>
             <span class="flex"></span>
-            <paper-icon-button class="meetupConfig" on-click="applyMeetup" icon="icons:done">
-            </paper-icon-button>
-            <paper-icon-button class="meetupConfig" on-click="deleteMeetup" icon="delete">
-            </paper-icon-button>
+            <paper-icon-button class="meetupConfig" on-click="applyMeetup" icon="icons:done"></paper-icon-button>
+            <paper-icon-button class="meetupConfig" on-click="deleteMeetup" icon="delete"></paper-icon-button>
           </div>
-          <label>[[meetup.description]]</label>
-          <ul>
-            <li>Date: [[meetup.date]]</li>
-            <li>Location: Toz tower branch in Kangnam</li>
-          </ul>
-          <google-map id="map" latitude="[[meetup.latLng.lat]]" longitude="[[meetup.latLng.lng]]" drag-events="false" disable-default-ui disable-zoom="true" zoom="15">
+          <div class="dialogItem">
+            <iron-icon icon="icons:event"></iron-icon>
+            <label>[[meetup.date]]</label>
+          </div>
+          <div class="dialogItem">
+            <iron-icon icon="communication:location-on"></iron-icon>
+            <label>Toz tower branch in Kangnam</label>
+          </div>
+          <div class="dialogItem">
+            <iron-icon icon="social:person"></iron-icon>
+            <label>3</label>
+          </div>
+          <div class="dialogItem">
+            <google-map id="map" latitude="[[meetup.latLng.lat]]" longitude="[[meetup.latLng.lng]]" drag-events="false" disable-default-ui disable-zoom="true" zoom="15">
+          </div>
+          <div class="dialogItem">
+            <iron-icon icon="icons:description"></iron-icon>
+            <label>[[meetup.description]]</label>
+          </div>
         </paper-material>
       </template>
     </paper-dialog>
@@ -141,7 +169,7 @@
             this.$.map.latitude = geo.coords.latitude;
             this.$.marker.longitude = geo.coords.longitude;
             this.$.marker.latitude = geo.coords.latitude;
-            this.$.map.notifyResize();
+            this.$.map.resize();
           }.bind(this));
         },
         closeInputForm: function () {
@@ -172,7 +200,7 @@
             hashcode: hasha(meetupKey).slice(0, 6),
             host: this.$.meetupHost.value,
             date: this.$.meetupDate.value,
-            description: this.$.meetupDesc.value,
+            description: this.$.meetupDesc.value || 'No details',
             created: Date.now(),
             latLng: {
               lat: this.$.marker.latitude,
