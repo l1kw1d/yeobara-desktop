@@ -1,1 +1,2 @@
-var hasha = require('hasha');
+require('hasha');
+require('hyphenize');
