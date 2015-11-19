@@ -38,6 +38,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.meetup = ctx.params.key;
       app.title = opts['title'];
       app.subtitle = opts['subtitle'];
+      app.applyMeetup(opts['hashcode']);
       app.route = 'meetup';
     });
 
@@ -48,10 +49,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     page('/attendees/:name', scrollToTop, function(data) {
       app.route = 'user-info';
       app.params = data.params;
-    });
-
-    page('/checkin', scrollToTop, function() {
-      app.route = 'checkin';
     });
 
     page('*', function() {

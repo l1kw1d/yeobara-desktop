@@ -21,25 +21,52 @@
       paper-material:hover .meetupConfig {
         display: block;
       }
+
+      #cards {
+        @apply(--layout-vertical);
+        @apply(--center-justified);
+        max-width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      paper-card {
+        width: 100%;
+        margin-bottom: 16px;
+      }
+
+      .tumbnail {
+        padding: 10px;
+      }
+
+      .detail h2 {
+        margin-bottom: 0px;
+      }
+
+      .email {
+        font-size: 1em;
+        color: grey;
+      }
     </style>
 
-    <firebase-collection id="meetupCollection" data="{{attendees}}"> </firebase-collection>
-
+    <firebase-collection id="meetupCollection" data="{{attendees}}"></firebase-collection>
     <template is="dom-repeat" items="[[attendees]]" as="attendee">
-      <paper-material elevation="1">
-        <div class="horizontal layout">
-          <h4>[[attendee.friendlyName]]</h4>
-          <span class="flex"></span>
-          <paper-icon-button class="meetupConfig" on-click="applyMeetup" icon="icons:done">
-          </paper-icon-button>
-          <paper-icon-button class="meetupConfig" on-click="deleteMeetup" icon="delete">
-          </paper-icon-button>
+      <paper-card>
+        <div class="layout horizontal wrap">
+          <div class="tumbnail">
+            <img src="[[attendee.profileImageURL]]" style="width:120px"/>
+          </div>
+          <div class="detail">
+            <div><h2>[[attendee.nickname]]</h2></div>
+            <div class="email"><iron-icon icon="communication:email"></iron-icon> [[attendee.email]]</div>
+          </div>
         </div>
-        <label>[[attendee.nickname]]</label>
-        <ul>
-          <li>Status: [[attendee.status]]</li>
-        </ul>
-      </paper-material>
+        <div class="card-actions">
+          <paper-button id="confirm" on-click="confirm">
+            [[showStatus(attendee.status)]]
+          </paper-button>
+        </div>
+      </paper-card>
     </template>
   </template>
 
@@ -58,8 +85,21 @@
             type: String
           }
         },
+        showStatus: function (status) {
+          return status.toUpperCase();
+        },
         meetupChanged: function () {
           this.$.meetupCollection.location = this.fbLocation + '/meetups/' + this.meetup + '/attendees';
+        },
+        confirm: function (e) {
+          if (e.model.get('attendee.status') === 'checkin') {
+            var uid = e.model.get('attendee.__firebaseKey__');
+            var updateData = {};
+
+            updateData[uid] = this.$.meetupCollection.getByKey(uid);
+            updateData[uid].status = 'checked';
+            this.$.meetupCollection.query.update(updateData);
+          }
         }
       });
     })();
