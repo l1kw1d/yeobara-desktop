@@ -21,20 +21,50 @@
       paper-material:hover .meetupConfig {
         display: block;
       }
+      .dialogItem {
+        color: #757575;
+        padding-bottom: 10px;
+      }
+
+      .header {
+        height: 52px;
+      }
+
+      .header h2 {
+        font-weight: 800px !important;
+        color: black;
+      }
+
+      google-map {
+        height: 200px;
+      }
     </style>
 
-    <firebase-document id="meetupCollection" data="{{meetupInfo}}"> </firebase-document>
+    <firebase-document id="meetupCollection" data="{{meetupInfo}}"></firebase-document>
 
-    <paper-material elevation="1">
-      <div class="">
-        <h4>[[meetupInfo.friendlyName]]</h4>
-        <span>[[meetupInfo.description]]</span>
+    <paper-material class="dialogCard" elevation="1">
+      <div class="horizontal layout dialogItem header">
+        <h2>[[meetupInfo.friendlyName]]</h2>
       </div>
-      <ul>
-        <li>Date: [[meetupInfo.date]]</li>
-        <li>Host: [[meetupInfo.host]]</li>
-        <li>Attndees count: {{attendeesCount}}</li>
-      </ul>
+      <div class="dialogItem">
+        <iron-icon icon="icons:event"></iron-icon>
+        <label>[[meetupInfo.date]]</label>
+      </div>
+      <div class="dialogItem">
+        <iron-icon icon="social:person"></iron-icon>
+        <label>[[attendeesCount(meetupInfo.attendees)]]</label>
+      </div>
+      <div class="dialogItem">
+        <iron-icon icon="communication:location-on"></iron-icon>
+        <label>Toz tower branch in Kangnam</label>
+      </div>
+      <div class="dialogItem">
+        <google-map id="map" latitude="[[meetupInfo.latLng.lat]]" longitude="[[meetupInfo.latLng.lng]]" drag-events="false" disable-default-ui disable-zoom="true" zoom="15">
+      </div>
+      <div class="dialogItem">
+        <iron-icon icon="icons:description"></iron-icon>
+        <label>[[meetupInfo.description]]</label>
+      </div>
     </paper-material>
   </template>
 
@@ -46,15 +76,11 @@
         is: 'meetup-dashboard',
         properties: {
           meetupInfo: {
-            type: String,
-            observer: 'meetupInfoChanged'
+            type: String
           },
           meetup: {
             type: String,
             observer: 'meetupChanged'
-          },
-          attendeesCount: {
-            type: String
           },
           fbLocation: {
             type: String
@@ -63,8 +89,8 @@
         meetupChanged: function () {
           this.$.meetupCollection.location = this.fbLocation + '/meetups/' + this.meetup;
         },
-        meetupInfoChanged: function () {
-          this.attendeesCount = this.meetupInfo.attendees ? Object.keys(this.meetupInfo.attendees).length : 0;
+        attendeesCount: function (e) {
+          return !e ? 0 : Object.keys(e).length;
         }
       });
     })();

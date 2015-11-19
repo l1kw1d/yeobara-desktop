@@ -71,11 +71,7 @@
     <paper-dialog modal id="dialog" entry-animation="scale-up-animation" exit-animation="fade-out-animation">
       <paper-toolbar>
         <span class="flex"></span>
-        <!-- Toolbar icons -->
         <paper-icon-button icon="add" on-click="showInputForm"></paper-icon-button>
-        <paper-icon-button icon="close" on-click="closeDashboard"></paper-icon-button>
-
-        <!-- Application name -->
         <div class="middle middle-container center horizontal layout">
           <div>Meetups</div>
         </div>
@@ -103,7 +99,7 @@
       <firebase-collection id="meetups" location="{{fbLocation}}/meetups" data="{{meetups}}"></firebase-collection>
       <firebase-document id="meetupHash" location="{{fbLocation}}/meetup-hash" data="{{meetupHash}}"></firebase-document>
 
-      <template is="dom-repeat" items="[[meetups]]" as="meetup" sort="_sortByCreated">
+      <template is="dom-repeat" items="{{meetups}}" as="meetup" sort="_sortByCreated">
         <paper-material class="dialogCard" elevation="1">
           <div class="horizontal layout dialogItem header">
             <h2>[[meetup.friendlyName]]</h2>
@@ -117,7 +113,7 @@
           </div>
           <div class="dialogItem">
             <iron-icon icon="social:person"></iron-icon>
-            <label>3</label>
+            <label>[[attendeesCount(meetup.attendees)]]</label>
           </div>
           <div class="dialogItem">
             <iron-icon icon="communication:location-on"></iron-icon>
@@ -141,7 +137,7 @@
 
       function getTodayDate() {
         var today = new Date();
-        return today.getFullYear() + '-' + today.getMonth() + '-' + today.getDate();
+        return today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
       }
 
       Polymer({
@@ -245,9 +241,13 @@
         },
         applyMeetup: function (e) {
           var meetup = e.srcElement.parentElement.dataHost.meetup;
-          var qs = 'title=' + meetup.friendlyName + '&subtitle=' + meetup.description;
+          var qs = 'title=' + meetup.friendlyName + '&subtitle=' + meetup.description
+                    + '&hashcode=' + meetup.hashcode;
           page('/meetup/' + meetup.__firebaseKey__ + '?' + qs);
           this.closeDashboard();
+        },
+        attendeesCount: function (e) {
+          return !e ? 0 : Object.keys(e).length;
         }
       });
     })();
