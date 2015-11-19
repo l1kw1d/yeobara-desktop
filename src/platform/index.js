@@ -10,7 +10,7 @@ require('crash-reporter').start();
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')({
-	showDevTools: true
+	showDevTools: process.env.DEBUG !== undefined
 });
 
 // menu loader
@@ -30,8 +30,8 @@ function onClosed() {
 
 function createMainWindow() {
 	const win = new BrowserWindow({
-		width: 1200,
-		height: 700,
+		width: 1600,
+		height: 800,
 		'web-preferences': {
 			'preload': path.join(__dirname, 'browser-ipc.js')
 		}
@@ -61,9 +61,6 @@ app.on('ready', () => {
 
 	// create main window
 	mainWindow = createMainWindow();
-
-	// start url broadcasting
-	beacon.advertiseUrl('http://naver.com');
 });
 
 app.on('menuitem-click', e => {
@@ -72,4 +69,10 @@ app.on('menuitem-click', e => {
 
 ipc.on('env', function (e) {
 	BrowserWindow.getFocusedWindow().webContents.send('env', process.env);
+});
+
+ipc.on('meetup', function (e, args) {
+	console.log('start broadcasting http://' + args.meetup);
+	beacon.advertiseUrl('http://' + args.meetup);
+	e.returnValue = 'http://' + args.meetup;
 });
