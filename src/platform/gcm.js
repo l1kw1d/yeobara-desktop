@@ -3,21 +3,18 @@
 const gcm = require('node-gcm');
 
 module.exports = {
-  sendNofification: function(opts, cb) {
+  sendNotification: function(opts, cb) {
     cb = cb || function() {};
 
     var message = new gcm.Message({
-      notification: {
-          title: opts.title,
-          icon: "ic_launcher",
-          body: opts.body
+      data: {
+        title: opts.title,
+        body: opts.body
       }
     });
 
-    var sender = new gcm.Sender(process.env.FB_APIKEY);
-
-    sender.send(message, {
-      topic: '/topics/global'
+    gcm.Sender(process.env.GCM_KEY).sender.send(message, {
+      registrationTokens: opts.userToken
     }, cb);
   }
 };

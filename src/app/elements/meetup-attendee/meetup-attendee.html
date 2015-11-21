@@ -99,6 +99,13 @@
             updateData[uid] = this.$.meetupCollection.getByKey(uid);
             updateData[uid].status = 'checked';
             this.$.meetupCollection.query.update(updateData);
+
+            // send confirm message va gcm
+            require('ipc').send('gcm', {
+              title: 'Meetup Check-in',
+              body: 'You has been confirmed to meetup',
+              userToken: attendee.gcmToken
+            });
           }
         }
       });
