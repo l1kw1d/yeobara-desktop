@@ -80,8 +80,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     }
   };
 
-  app.applyMeetup = function (meetup) {
-    require('ipc').sendSync('meetup', {meetup: meetup});
+  app.updateMeetup = function (opts) {
+    console.log(opts);
+    app.meetup = opts.meetup;
+    app.title = opts.title;
+    app.subtitle = opts.subtitle;
+    app.hashcode = opts.hashcode;
+
+    require('ipc').sendSync('advertising', {
+      hashcode: opts.hashcode
+    });
   };
 
 })(document);

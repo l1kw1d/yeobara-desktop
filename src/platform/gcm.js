@@ -3,7 +3,7 @@
 const gcm = require('node-gcm');
 
 module.exports = {
-  sendNotification: function(opts, cb) {
+  send: function(opts, cb) {
     cb = cb || function() {};
 
     var message = new gcm.Message({
@@ -13,7 +13,8 @@ module.exports = {
       }
     });
 
-    gcm.Sender(process.env.GCM_KEY).sender.send(message, {
+    var sender = new gcm.Sender(process.env.GCM_KEY);
+    sender.sendNoRetry(message, {
       registrationTokens: opts.userToken
     }, cb);
   }

@@ -102,9 +102,9 @@
 
             // send confirm message va gcm
             require('ipc').send('gcm', {
-              title: 'Meetup Check-in',
-              body: 'You has been confirmed to meetup',
-              userToken: attendee.gcmToken
+              title: this.title + ' meetup',
+              body: 'Your check-in request has been confirmed',
+              userToken: e.model.get('attendee.gcmToken')
             });
           }
         }

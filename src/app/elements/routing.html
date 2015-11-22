@@ -35,10 +35,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/meetup/:key', scrollToTop, function(ctx) {
       var opts = qs.parse(ctx.querystring);
-      app.meetup = ctx.params.key;
-      app.title = opts['title'];
-      app.subtitle = opts['subtitle'];
-      app.applyMeetup(opts['hashcode']);
+
+      app.updateMeetup({
+        meetup: ctx.params.key,
+        title: opts['title'],
+        subtitle: opts['subtitle'],
+        hashcode: opts['hashcode']
+      });
+
       app.route = 'meetup';
     });
 

@@ -4,7 +4,7 @@ const BrowserWindow = require('browser-window');
 const beacon = require('eddystone-beacon');
 const path = require('path');
 const ipc = require('ipc');
-const gcm = require('gcm');
+const gcm = require('./gcm');
 
 // report crashes to the Electron project
 require('crash-reporter').start();
@@ -72,13 +72,18 @@ ipc.on('env', function (e) {
 	BrowserWindow.getFocusedWindow().webContents.send('env', process.env);
 });
 
-ipc.on('meetup', function (e, args) {
-	console.log('start broadcasting http://' + args.meetup);
-	beacon.advertiseUrl('http://' + args.meetup);
-	e.returnValue = 'http://' + args.meetup;
+ipc.on('advertising', function (e, args) {
+	var url = 'http://yeobara.com/' + args.hashcode;
+	beacon.advertiseUrl(url);
+	e.returnValue = url;
+
+	console.log('start broadcasting ' + url);
 });
 
 ipc.on('gcm', function (e, args) {
-	console.log('gcm', args);
-	gcm.sendNotification(args);
+	gcm.send(args, function (err, result) {
+		if (err) {
+			console.log('GCM notification has been failed', err, result, args);
+		}
+	});
 });
