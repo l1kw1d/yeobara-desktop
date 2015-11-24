@@ -57,9 +57,21 @@ app.on('activate-with-no-open-windows', () => {
 });
 
 app.on('ready', () => {
-	// load .env to process.env
-	require('dotenv').load();
+	require('dotenv').load({
+		path: path.resolve(__dirname, '../../env')
+	});
 
+	if (!process.env.FB_APIKEY || !process.env.FB_APPNAME || !process.env.GCM_KEY) {
+		const dialog = require('dialog');
+
+		dialog.showMessageBox({
+			type: 'none',
+			message: 'No env file. Check readme file for configuration',
+			buttons: ['ok']
+		});
+
+		app.quit();
+	}
 	// create main window
 	mainWindow = createMainWindow();
 });
