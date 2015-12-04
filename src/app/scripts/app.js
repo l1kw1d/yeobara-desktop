@@ -81,7 +81,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   };
 
   app.updateMeetup = function (opts) {
-    console.log(opts);
     app.meetup = opts.meetup;
     app.title = opts.title;
     app.subtitle = opts.subtitle;
