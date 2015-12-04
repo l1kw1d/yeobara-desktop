@@ -12,7 +12,7 @@ $ FB_APIKEY=YOURKEY FB_APPNAME=https://YOURAPP.firebaseio.com/ npm install
 
 ### Configuration
 
-This app requires `.env` file at root location with information of connecting Firebase and GCM. It will be loaded as environment value on starting application. here are kinds of requirement value.
+This app requires `env` file at root location with information of connecting Firebase and GCM. It will be loaded as environment value on starting application. here are kinds of requirement value.
 
 ```
 FB_APIKEY=YOUR_FB_KEY
@@ -30,7 +30,7 @@ $ FB_APIKEY=YOURKEY FB_APPNAME=https://YOURAPP.firebaseio.com/ GCM_KEY=YOUR_GCM_
 $ FB_APIKEY=YOURKEY FB_APPNAME=https://YOURAPP.firebaseio.com/ GCM_KEY=YOUR_GCM_KEY npm run env
 ```
 
-The other hand is creating `.env` file manually by yourself.
+The other hand is creating `env` file manually by yourself.
 
 ### Run
 
