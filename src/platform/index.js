@@ -77,6 +77,10 @@ app.on('ready', () => {
 });
 
 app.on('menuitem-click', e => {
+	if (e.event === 'meetup') {
+		beacon.stop();
+	}
+
 	BrowserWindow.getFocusedWindow().webContents.send(e.event);
 });
 
