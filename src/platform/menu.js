@@ -9,7 +9,14 @@ module.exports = {
       role: 'about'
     }, {
       label: 'Select a meetup',
+      accelerator: 'Cmd+M',
       event: 'meetup'
+    }, {
+      label: 'Quit',
+      accelerator: 'Cmd+Q',
+      click() {
+        app.quit();
+      }
     }]
   }],
   help: [{
