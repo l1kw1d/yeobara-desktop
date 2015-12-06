@@ -106,6 +106,14 @@
               body: 'Your check-in request has been confirmed',
               userToken: e.model.get('attendee.gcmToken')
             });
+          } else if (e.model.get('attendee.status') === 'checked') {
+            // reset status
+            var uid = e.model.get('attendee.__firebaseKey__');
+            var updateData = {};
+
+            updateData[uid] = this.$.meetupCollection.getByKey(uid);
+            updateData[uid].status = 'rsvp';
+            this.$.meetupCollection.query.update(updateData);
           }
         }
       });
