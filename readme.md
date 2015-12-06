@@ -7,7 +7,7 @@
 ## Dev
 
 ```
-$ FB_APIKEY=YOURKEY FB_APPNAME=https://YOURAPP.firebaseio.com/ npm install
+$ FB_APIKEY=YOURKEY FB_APPNAME=https://YOURAPP.firebaseio.com/ GCM_KEY=YOUR_GCM_KEY npm install
 ```
 
 ### Configuration
