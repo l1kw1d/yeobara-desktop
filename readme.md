@@ -46,7 +46,9 @@ $ npm run bundle && npm run build
 
 Builds the app for OS X, Linux, and Windows, using [electron-packager](https://github.com/maxogden/electron-packager).
 
+## Download
 
+You can [download](https://github.com/yeobara/yeobara-desktop/releases/latest) installable version of Yeobara which has been tested and showed for [Google Hackfair for Korea 2015](http://googlekoreablog.blogspot.kr/2015/10/2015-google-hackfair.html)
 ## License
 
 MIT © [Yeobara](http://github.com/yeobara)
